@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingreso de Servicio · Servigrúas Mérida</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#1A1A1A; --cream:#F7F5F0; --gray-light:#EEECE8; --gray-mid:#D5D2CB;
+    --gray-text:#888580; --olive:#4A5240; --olive-light:#EFF1EB;
+    --amber:#C8860A; --red:#B03A2E; --green:#2E7D32; --blue:#1F5C9E;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--black); padding-bottom:2rem; }
+
+  .topbar {
+    background:var(--black); color:#fff; padding:1rem 1.25rem;
+    position:sticky; top:0; z-index:10;
+  }
+  .topbar-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; }
+  .topbar-brand span { color:var(--amber); }
+  .topbar-sub { font-size:.7rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+
+  .form-wrap { padding:1.25rem; max-width:520px; margin:0 auto; }
+
+  .group {
+    background:#fff; border-radius:14px; border:1.5px solid var(--gray-light);
+    padding:1.1rem; margin-bottom:1rem;
+  }
+  .group-title {
+    font-size:.68rem; text-transform:uppercase; letter-spacing:1.5px;
+    color:var(--olive); font-weight:700; margin-bottom:.85rem;
+  }
+
+  .field { margin-bottom:.9rem; }
+  .field:last-child { margin-bottom:0; }
+  .field label {
+    display:block; font-size:.78rem; font-weight:600;
+    color:var(--black); margin-bottom:.35rem;
+  }
+  .field input, .field select, .field textarea {
+    width:100%; padding:.7rem .85rem; border-radius:10px;
+    border:1.5px solid var(--gray-mid); font-size:.95rem;
+    font-family:'Inter',sans-serif; background:#fff; color:var(--black);
+    -webkit-appearance:none; appearance:none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline:none; border-color:var(--olive);
+  }
+  .field textarea { resize:vertical; min-height:60px; }
+
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.7rem; }
+
+  select { background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888580' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat:no-repeat; background-position:right .75rem center; background-size:18px; padding-right:2.2rem; }
+
+  .btn-guardar {
+    width:100%; background:var(--olive); color:#fff; border:none;
+    border-radius:12px; padding:1rem; font-size:1rem; font-weight:700;
+    cursor:pointer; margin-top:.5rem; transition:background .15s;
+  }
+  .btn-guardar:active { background:#3a4132; }
+  .btn-guardar:disabled { background:var(--gray-mid); cursor:not-allowed; }
+
+  .btn-limpiar {
+    width:100%; background:transparent; color:var(--gray-text);
+    border:1.5px solid var(--gray-mid); border-radius:12px; padding:.7rem;
+    font-size:.85rem; font-weight:600; cursor:pointer; margin-top:.6rem;
+  }
+
+  .toast {
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(100px);
+    background:var(--green); color:#fff; padding:.85rem 1.5rem; border-radius:12px;
+    font-size:.88rem; font-weight:600; transition:transform .25s;
+    box-shadow:0 8px 24px rgba(0,0,0,.2); z-index:50; max-width:90%; text-align:center;
+  }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.error { background:var(--red); }
+
+  .req { color:var(--red); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">Servigrúas <span>Mérida</span></div>
+  <div class="topbar-sub">Ingreso rápido de servicio</div>
+</div>
+
+<form class="form-wrap" id="form">
+
+  <div class="group">
+    <div class="group-title">Datos generales</div>
+    <div class="field">
+      <label>Aseguradora <span class="req">*</span></label>
+      <select id="aseguradora" required>
+        <option value="">Selecciona...</option>
+        <option>General</option>
+        <option>G&T</option>
+        <option>Universales</option>
+        <option>MAPFRE</option>
+        <option>IGS</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Vehículo</label>
+      <input type="text" id="vehiculo" placeholder="Ej. Toyota Hilux Gris 2020">
+    </div>
+    <div class="field">
+      <label>Grúa / Placa <span class="req">*</span></label>
+      <select id="placa" required>
+        <option value="">Selecciona...</option>
+        <option>C621BRK</option>
+        <option>C544BVM</option>
+        <option>C903BSX</option>
+        <option>C301BXY</option>
+        <option>C765CBV</option>
+        <option>C792BRD</option>
+        <option>VIALES</option>
+        <option>TAXI OSMAR</option>
+        <option>TAXI OLIVER</option>
+        <option>TAXI EDGAR</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Fecha <span class="req">*</span></label>
+      <input type="date" id="fecha" required>
+    </div>
+    <div class="field">
+      <label>Tipo de Servicio <span class="req">*</span></label>
+      <select id="tipoServicio" required>
+        <option value="">Selecciona...</option>
+        <option>Grúas</option>
+        <option>Paso de Corriente</option>
+        <option>Cerrajería</option>
+        <option>Cambio de Llanta</option>
+        <option>Abasto de Combustible</option>
+        <option>Taxi</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Ubicación y expediente</div>
+    <div class="field">
+      <label>Dirección Punto A</label>
+      <input type="text" id="direccionA" placeholder="Origen">
+    </div>
+    <div class="field">
+      <label>Dirección Punto B</label>
+      <input type="text" id="direccionB" placeholder="Destino">
+    </div>
+    <div class="field">
+      <label>Expediente</label>
+      <input type="text" id="expediente">
+    </div>
+    <div class="field">
+      <label>Movimiento Económico</label>
+      <input type="text" id="movEconomico">
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Costos</div>
+    <div class="row2">
+      <div class="field">
+        <label>Kms Recorridos</label>
+        <input type="number" id="kms" step="0.01">
+      </div>
+      <div class="field">
+        <label>Costo Kms (Q)</label>
+        <input type="number" id="costoKms" step="0.01">
+      </div>
+    </div>
+    <div class="field">
+      <label>Costo Pactado Local (Q)</label>
+      <input type="number" id="costoPactado" step="0.01">
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Horarios</div>
+    <div class="row3">
+      <div class="field">
+        <label>Asignado</label>
+        <input type="time" id="horaAsignado">
+      </div>
+      <div class="field">
+        <label>Contacto</label>
+        <input type="time" id="horaContacto">
+      </div>
+      <div class="field">
+        <label>Fin</label>
+        <input type="time" id="horaFin">
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Adicional</div>
+    <div class="field">
+      <label>Tipo de Vehículo</label>
+      <input type="text" id="tipoVehiculo">
+    </div>
+    <div class="field">
+      <label>Observaciones</label>
+      <textarea id="observaciones" placeholder="Ej. MUERTO, T/E, DEPARTAMENTAL..."></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="btn-guardar" id="btnGuardar">💾 Guardar servicio</button>
+  <button type="button" class="btn-limpiar" id="btnLimpiar">Limpiar formulario</button>
+
+</form>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ⚠️ Reemplaza esta URL con la de tu Web App publicada (ver instrucciones)
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxmitiY7HmwueODC1uNRN1BR1rCI5q1VlCQURZXjhPIDTRkUGhVwPz0DEdkP48X90q5/exec';
+
+const form = document.getElementById('form');
+const btnGuardar = document.getElementById('btnGuardar');
+const toast = document.getElementById('toast');
+
+// Fecha de hoy por defecto
+document.getElementById('fecha').valueAsDate = new Date();
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+function limpiarFormulario() {
+  form.reset();
+  document.getElementById('fecha').valueAsDate = new Date();
+}
+
+document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulario);
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const fechaVal = document.getElementById('fecha').value; // YYYY-MM-DD
+  const fechaObj = new Date(fechaVal + 'T00:00:00');
+  const MESES = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+
+  const data = {
+    aseguradora:   document.getElementById('aseguradora').value,
+    vehiculo:      document.getElementById('vehiculo').value,
+    placa:         document.getElementById('placa').value,
+    fecha:         fechaVal,
+    mes:           MESES[fechaObj.getMonth()],
+    anio:          fechaObj.getFullYear(),
+    tipoServicio:  document.getElementById('tipoServicio').value,
+    direccionA:    document.getElementById('direccionA').value,
+    direccionB:    document.getElementById('direccionB').value,
+    expediente:    document.getElementById('expediente').value,
+    movEconomico:  document.getElementById('movEconomico').value,
+    kms:           document.getElementById('kms').value,
+    costoKms:      document.getElementById('costoKms').value,
+    costoPactado:  document.getElementById('costoPactado').value,
+    horaAsignado:  document.getElementById('horaAsignado').value,
+    horaContacto:  document.getElementById('horaContacto').value,
+    horaFin:       document.getElementById('horaFin').value,
+    tipoVehiculo:  document.getElementById('tipoVehiculo').value,
+    observaciones: document.getElementById('observaciones').value,
+  };
+
+  if (WEB_APP_URL.includes('PEGAR_AQUI')) {
+    showToast('⚠ Falta configurar la URL del Web App en el código.', true);
+    return;
+  }
+
+  btnGuardar.disabled = true;
+  btnGuardar.textContent = 'Guardando...';
+
+  try {
+    const resp = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' } // evita preflight CORS
+    });
+    const result = await resp.json();
+
+    if (result.ok) {
+      showToast('✅ Servicio guardado correctamente.');
+      limpiarFormulario();
+    } else {
+      showToast('⚠ Error: ' + (result.error || 'Desconocido'), true);
+    }
+  } catch (err) {
+    showToast('⚠ No se pudo conectar. Revisa tu internet.', true);
+  } finally {
+    btnGuardar.disabled = false;
+    btnGuardar.textContent = '💾 Guardar servicio';
+  }
+});
+</script>
+</body>
+</html>
