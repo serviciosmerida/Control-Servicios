@@ -1,92 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingreso de Servicio · Servigrúas Mérida</title>
-    
-    <!-- Iconos para acceso directo en teléfono -->
-    <link rel="icon" type="image/png" sizes="512x512" href="logo.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1A1A1A">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingreso de Servicio · Servigrúas Mérida</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#1A1A1A; --cream:#F7F5F0; --gray-light:#EEECE8; --gray-mid:#D5D2CB;
+    --gray-text:#888580; --olive:#4A5240; --olive-light:#EFF1EB;
+    --amber:#C8860A; --red:#B03A2E; --green:#2E7D32; --blue:#1F5C9E;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--black); padding-bottom:2rem; }
 
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --black:#1A1A1A; --cream:#F7F5F0; --gray-light:#EEECE8; --gray-mid:#D5D2CB;
-            --gray-text:#888580; --olive:#4A5240; --olive-light:#EFF1EB;
-            --amber:#C8860A; --red:#B03A2E; --green:#2E7D32; --blue:#1F5C9E;
-        }
-        * { box-sizing:border-box; margin:0; padding:0; }
-        body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--black); padding-bottom:2rem; }
-        .topbar {
-            background:var(--black); color:#fff; padding:1rem 1.25rem;
-            position:sticky; top:0; z-index:10;
-        }
-        .topbar-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; }
-        .topbar-brand span { color:var(--amber); }
-        .topbar-sub { font-size:.7rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-        .form-wrap { padding:1.25rem; max-width:520px; margin:0 auto; }
-        .group {
-            background:#fff; border-radius:14px; border:1.5px solid var(--gray-light);
-            padding:1.1rem; margin-bottom:1rem;
-        }
-        .group-title {
-            font-size:.68rem; text-transform:uppercase; letter-spacing:1.5px;
-            color:var(--olive); font-weight:700; margin-bottom:.85rem;
-        }
-        .field { margin-bottom:.9rem; }
-        .field:last-child { margin-bottom:0; }
-        .field label {
-            display:block; font-size:.78rem; font-weight:600;
-            color:var(--black); margin-bottom:.35rem;
-        }
-        .field input, .field select, .field textarea {
-            width:100%; padding:.7rem .85rem; border-radius:10px;
-            border:1.5px solid var(--gray-mid); font-size:.95rem;
-            font-family:'Inter',sans-serif; background:#fff; color:var(--black);
-            -webkit-appearance:none; appearance:none;
-        }
-        .field input:focus, .field select:focus, .field textarea:focus {
-            outline:none; border-color:var(--olive);
-        }
-        .field textarea { resize:vertical; min-height:60px; }
-        .row2 { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
-        .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.7rem; }
-        select { 
-            background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888580' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat:no-repeat; 
-            background-position:right .75rem center; 
-            background-size:18px; 
-            padding-right:2.2rem; 
-        }
-        .btn-guardar {
-            width:100%; background:var(--olive); color:#fff; border:none;
-            border-radius:12px; padding:1rem; font-size:1rem; font-weight:700;
-            cursor:pointer; margin-top:.5rem; transition:background .15s;
-        }
-        .btn-guardar:active { background:#3a4132; }
-        .btn-guardar:disabled { background:var(--gray-mid); cursor:not-allowed; }
-        .btn-limpiar {
-            width:100%; background:transparent; color:var(--gray-text);
-            border:1.5px solid var(--gray-mid); border-radius:12px; padding:.7rem;
-            font-size:.85rem; font-weight:600; cursor:pointer; margin-top:.6rem;
-        }
-        .toast {
-            position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(100px);
-            background:var(--green); color:#fff; padding:.85rem 1.5rem; border-radius:12px;
-            font-size:.88rem; font-weight:600; transition:transform .25s;
-            box-shadow:0 8px 24px rgba(0,0,0,.2); z-index:50; max-width:90%; text-align:center;
-        }
-        .toast.show { transform:translateX(-50%) translateY(0); }
-        .toast.error { background:var(--red); }
-        .req { color:var(--red); }
-    </style>
+  .topbar {
+    background:var(--black); color:#fff; padding:1rem 1.25rem;
+    position:sticky; top:0; z-index:10;
+  }
+  .topbar-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; }
+  .topbar-brand span { color:var(--amber); }
+  .topbar-sub { font-size:.7rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+
+  .form-wrap { padding:1.25rem; max-width:520px; margin:0 auto; }
+
+  .group {
+    background:#fff; border-radius:14px; border:1.5px solid var(--gray-light);
+    padding:1.1rem; margin-bottom:1rem;
+  }
+  .group-title {
+    font-size:.68rem; text-transform:uppercase; letter-spacing:1.5px;
+    color:var(--olive); font-weight:700; margin-bottom:.85rem;
+  }
+
+  .field { margin-bottom:.9rem; }
+  .field:last-child { margin-bottom:0; }
+  .field label {
+    display:block; font-size:.78rem; font-weight:600;
+    color:var(--black); margin-bottom:.35rem;
+  }
+  .field input, .field select, .field textarea {
+    width:100%; padding:.7rem .85rem; border-radius:10px;
+    border:1.5px solid var(--gray-mid); font-size:.95rem;
+    font-family:'Inter',sans-serif; background:#fff; color:var(--black);
+    -webkit-appearance:none; appearance:none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline:none; border-color:var(--olive);
+  }
+  .field textarea { resize:vertical; min-height:60px; }
+
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.7rem; }
+
+  select { background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888580' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat:no-repeat; background-position:right .75rem center; background-size:18px; padding-right:2.2rem; }
+
+  .btn-guardar {
+    width:100%; background:var(--olive); color:#fff; border:none;
+    border-radius:12px; padding:1rem; font-size:1rem; font-weight:700;
+    cursor:pointer; margin-top:.5rem; transition:background .15s;
+  }
+  .btn-guardar:active { background:#3a4132; }
+  .btn-guardar:disabled { background:var(--gray-mid); cursor:not-allowed; }
+
+  .btn-limpiar {
+    width:100%; background:transparent; color:var(--gray-text);
+    border:1.5px solid var(--gray-mid); border-radius:12px; padding:.7rem;
+    font-size:.85rem; font-weight:600; cursor:pointer; margin-top:.6rem;
+  }
+
+  .toast {
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(100px);
+    background:var(--green); color:#fff; padding:.85rem 1.5rem; border-radius:12px;
+    font-size:.88rem; font-weight:600; transition:transform .25s;
+    box-shadow:0 8px 24px rgba(0,0,0,.2); z-index:50; max-width:90%; text-align:center;
+  }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.error { background:var(--red); }
+
+  .req { color:var(--red); }
+</style>
 </head>
-  <body>
+<body>
 
 <div class="topbar">
   <div class="topbar-brand">Servigrúas <span>Mérida</span></div>
@@ -206,15 +202,7 @@
     <div class="group-title">Adicional</div>
     <div class="field">
       <label>Tipo de Vehículo</label>
-      <select id="tipoVehiculo">
-        <option value="">Selecciona...</option>
-        <option>Liviano</option>
-        <option>Mediano</option>
-        <option>Semipesado</option>
-        <option>Pesado</option>
-        <option>Blindado</option>
-        <option>Taxi</option>
-      </select>
+      <input type="text" id="tipoVehiculo">
     </div>
     <div class="field">
       <label>Observaciones</label>
