@@ -4,7 +4,7 @@
   "description": "Ingreso de servicio",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#1A1A1A",
+  "background_color": "#FFFFFF",
   "theme_color": "#1A1A1A",
   "icons": [
     {
