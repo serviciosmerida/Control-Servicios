@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ingreso de Servicio · Servigrúas Mérida.</title>
+<link rel="icon" type="image/png" sizes="512x512" href="logo2.png">
+<link rel="apple-touch-icon" sizes="512x512" href="logo2.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A1A1A">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -202,7 +206,15 @@
     <div class="group-title">Adicional</div>
     <div class="field">
       <label>Tipo de Vehículo</label>
-      <input type="text" id="tipoVehiculo">
+      <select id="tipoVehiculo">
+        <option value="">Selecciona...</option>
+        <option>Liviano</option>
+        <option>Mediano</option>
+        <option>Semipesado</option>
+        <option>Pesado</option>
+        <option>Blindado</option>
+        <option>Taxi</option>
+      </select>
     </div>
     <div class="field">
       <label>Observaciones</label>
@@ -218,14 +230,12 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ⚠️ Reemplaza esta URL con la de tu Web App publicada (ver instrucciones)
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxmitiY7HmwueODC1uNRN1BR1rCI5q1VlCQURZXjhPIDTRkUGhVwPz0DEdkP48X90q5/exec';
 
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btnGuardar');
 const toast = document.getElementById('toast');
 
-// Fecha de hoy por defecto
 document.getElementById('fecha').valueAsDate = new Date();
 
 function showToast(msg, isError) {
@@ -244,7 +254,7 @@ document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulari
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const fechaVal = document.getElementById('fecha').value; // YYYY-MM-DD
+  const fechaVal = document.getElementById('fecha').value;
   const fechaObj = new Date(fechaVal + 'T00:00:00');
   const MESES = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
 
@@ -270,11 +280,6 @@ form.addEventListener('submit', async (e) => {
     observaciones: document.getElementById('observaciones').value,
   };
 
-  if (WEB_APP_URL.includes('PEGAR_AQUI')) {
-    showToast('⚠ Falta configurar la URL del Web App en el código.', true);
-    return;
-  }
-
   btnGuardar.disabled = true;
   btnGuardar.textContent = 'Guardando...';
 
@@ -282,7 +287,7 @@ form.addEventListener('submit', async (e) => {
     const resp = await fetch(WEB_APP_URL, {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'text/plain' } // evita preflight CORS
+      headers: { 'Content-Type': 'text/plain' }
     });
     const result = await resp.json();
 
