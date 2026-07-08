@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,23 +14,41 @@
     --black:#1A1A1A; --cream:#F7F5F0; --gray-light:#EEECE8; --gray-mid:#D5D2CB;
     --gray-text:#888580; --olive:#4A5240; --olive-light:#EFF1EB;
     --amber:#C8860A; --red:#B03A2E; --green:#2E7D32; --blue:#1F5C9E;
+    --bg: #F7F5F0; --surface: #ffffff; --border: #EEECE8;
+    --text: #1A1A1A; --text-sub: #888580; --topbar: #1A1A1A;
+  }
+  [data-theme="dark"] {
+    --bg: #121212; --surface: #1E1E1E; --border: #2E2E2E;
+    --text: #F0EEE9; --text-sub: #888580; --topbar: #0A0A0A;
+    --gray-light: #2E2E2E; --gray-mid: #3A3A3A; --cream: #121212;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--black); padding-bottom:2rem; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); padding-bottom:2rem; transition:background .2s,color .2s; }
 
   .topbar {
-    background:var(--black); color:#fff; padding:1rem 1.25rem;
+    background:var(--topbar); color:#fff; padding:1rem 1.25rem;
     position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
   }
+  .topbar-left {}
   .topbar-brand { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; }
   .topbar-brand span { color:var(--amber); }
   .topbar-sub { font-size:.7rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
+  .btn-theme {
+    background:none; border:1.5px solid rgba(255,255,255,.25);
+    border-radius:50%; width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1.1rem; transition:border-color .15s;
+    flex-shrink:0;
+  }
+  .btn-theme:hover { border-color:rgba(255,255,255,.6); }
+
   .form-wrap { padding:1.25rem; max-width:520px; margin:0 auto; }
 
   .group {
-    background:#fff; border-radius:14px; border:1.5px solid var(--gray-light);
-    padding:1.1rem; margin-bottom:1rem;
+    background:var(--surface); border-radius:14px; border:1.5px solid var(--border);
+    padding:1.1rem; margin-bottom:1rem; transition:background .2s,border-color .2s;
   }
   .group-title {
     font-size:.68rem; text-transform:uppercase; letter-spacing:1.5px;
@@ -41,13 +59,14 @@
   .field:last-child { margin-bottom:0; }
   .field label {
     display:block; font-size:.78rem; font-weight:600;
-    color:var(--black); margin-bottom:.35rem;
+    color:var(--text); margin-bottom:.35rem;
   }
   .field input, .field select, .field textarea {
     width:100%; padding:.7rem .85rem; border-radius:10px;
     border:1.5px solid var(--gray-mid); font-size:.95rem;
-    font-family:'Inter',sans-serif; background:#fff; color:var(--black);
+    font-family:'Inter',sans-serif; background:var(--surface); color:var(--text);
     -webkit-appearance:none; appearance:none;
+    transition:background .2s,border-color .2s,color .2s;
   }
   .field input:focus, .field select:focus, .field textarea:focus {
     outline:none; border-color:var(--olive);
@@ -69,7 +88,7 @@
   .btn-guardar:disabled { background:var(--gray-mid); cursor:not-allowed; }
 
   .btn-limpiar {
-    width:100%; background:transparent; color:var(--gray-text);
+    width:100%; background:transparent; color:var(--text-sub);
     border:1.5px solid var(--gray-mid); border-radius:12px; padding:.7rem;
     font-size:.85rem; font-weight:600; cursor:pointer; margin-top:.6rem;
   }
@@ -89,8 +108,11 @@
 <body>
 
 <div class="topbar">
-  <div class="topbar-brand">Servigrúas <span>Mérida</span></div>
-  <div class="topbar-sub">Ingreso rápido de servicio</div>
+  <div class="topbar-left">
+    <div class="topbar-brand">Servigrúas <span>Mérida</span></div>
+    <div class="topbar-sub">Ingreso rápido de servicio</div>
+  </div>
+  <button class="btn-theme" id="btnTheme" onclick="toggleTheme()" title="Cambiar modo">🌙</button>
 </div>
 
 <form class="form-wrap" id="form">
@@ -158,11 +180,11 @@
     </div>
     <div class="field">
       <label>Expediente</label>
-      <input type="number" id="expediente">
+      <input type="number" id="expediente" inputmode="numeric">
     </div>
     <div class="field">
       <label>Movimiento Económico</label>
-      <input type="number" id="movEconomico">
+      <input type="number" id="movEconomico" inputmode="numeric">
     </div>
   </div>
 
@@ -232,11 +254,37 @@
 <script>
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxmitiY7HmwueODC1uNRN1BR1rCI5q1VlCQURZXjhPIDTRkUGhVwPz0DEdkP48X90q5/exec';
 
-const form = document.getElementById('form');
+const form       = document.getElementById('form');
 const btnGuardar = document.getElementById('btnGuardar');
-const toast = document.getElementById('toast');
+const toast      = document.getElementById('toast');
 
-document.getElementById('fecha').valueAsDate = new Date();
+// ── Fecha local correcta (sin problema UTC) ──
+function setFechaHoy() {
+  const hoy = new Date();
+  const yyyy = hoy.getFullYear();
+  const mm   = String(hoy.getMonth() + 1).padStart(2, '0');
+  const dd   = String(hoy.getDate()).padStart(2, '0');
+  document.getElementById('fecha').value = `${yyyy}-${mm}-${dd}`;
+}
+setFechaHoy();
+
+// ── Modo oscuro/claro ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('btnTheme').textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+
+// Cargar tema guardado
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('btnTheme').textContent = '☀️';
+  }
+})();
 
 function showToast(msg, isError) {
   toast.textContent = msg;
@@ -246,7 +294,7 @@ function showToast(msg, isError) {
 
 function limpiarFormulario() {
   form.reset();
-  document.getElementById('fecha').valueAsDate = new Date();
+  setFechaHoy();
 }
 
 document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulario);
