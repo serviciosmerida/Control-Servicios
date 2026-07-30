@@ -131,18 +131,34 @@
       </select>
     </div>
     <div class="field">
-      <label>Vehículo</label>
+      <label>Vehículo / Descripción</label>
       <input type="text" id="vehiculo" placeholder="Ej. Toyota Hilux Gris 2020">
     </div>
     <div class="row2">
       <div class="field">
-        <label>Placa</label>
-        <input type="text" id="placa" placeholder="Ej. P-123ABC">
+        <label>Placa Carro</label>
+        <input type="text" id="placaCarro" placeholder="Ej. P-123ABC">
       </div>
       <div class="field">
-        <label>Marca</label>
-        <input type="text" id="marca" placeholder="Ej. Toyota">
+        <label>Marca Carro</label>
+        <input type="text" id="marcaCarro" placeholder="Ej. Toyota">
       </div>
+    </div>
+    <div class="field">
+      <label>Grúa / Placa <span class="req">*</span></label>
+      <select id="placaGrua" required>
+        <option value="">Selecciona...</option>
+        <option>C621BRK</option>
+        <option>C544BVM</option>
+        <option>C903BSX</option>
+        <option>C301BXY</option>
+        <option>C765CBV</option>
+        <option>C792BRD</option>
+        <option>VIALES</option>
+        <option>TAXI OSMAR</option>
+        <option>TAXI OLIVER</option>
+        <option>TAXI EDGAR</option>
+      </select>
     </div>
     <div class="field">
       <label>Fecha <span class="req">*</span></label>
@@ -166,7 +182,7 @@
     <div class="group-title">Ubicación y expediente</div>
     <div class="field">
       <label>Base (Salida de grúa)</label>
-      <input type="text" id="base" placeholder="Base Central / Predio">
+      <input type="text" id="base" placeholder="Ej. Base Central / Predio">
     </div>
     <div class="field">
       <label>Dirección Punto A (Origen)</label>
@@ -256,7 +272,7 @@ const form       = document.getElementById('form');
 const btnGuardar = document.getElementById('btnGuardar');
 const toast      = document.getElementById('toast');
 
-// ── Fecha local correcta (sin problema UTC) ──
+// ── Fecha local correcta ──
 function setFechaHoy() {
   const hoy = new Date();
   const yyyy = hoy.getFullYear();
@@ -307,8 +323,9 @@ form.addEventListener('submit', async (e) => {
   const data = {
     aseguradora:   document.getElementById('aseguradora').value,
     vehiculo:      document.getElementById('vehiculo').value,
-    placa:         document.getElementById('placa').value,
-    marca:         document.getElementById('marca').value,
+    placaCarro:    document.getElementById('placaCarro').value,
+    marcaCarro:    document.getElementById('marcaCarro').value,
+    placaGrua:     document.getElementById('placaGrua').value,
     fecha:         fechaVal,
     mes:           MESES[fechaObj.getMonth()],
     anio:          fechaObj.getFullYear(),
